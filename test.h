@@ -16,5 +16,7 @@ void test_vx_and_vy(chip8_t *chip8);
 void test_vx_xor_vy(chip8_t *chip8);
 void test_vx_plus_vy_no_carry(chip8_t *chip8);
 void test_vx_plus_vy_carry(chip8_t *chip8);
+void test_vx_minus_vy_no_borrow(chip8_t *chip8);
+void test_vx_minus_vy_borrow(chip8_t *chip8);
 
 #endif

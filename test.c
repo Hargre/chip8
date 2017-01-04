@@ -199,6 +199,7 @@ void test_vx_plus_vy_no_carry(chip8_t *chip8) {
 
   assert(chip8->registers[0] == 0x01);
   assert(chip8->registers[0xF] == 0);
+  assert(chip8->pc == 0x202);
 }
 
 void test_vx_plus_vy_carry(chip8_t *chip8) {
@@ -213,6 +214,38 @@ void test_vx_plus_vy_carry(chip8_t *chip8) {
   emulate_cycle(chip8);
 
   assert(chip8->registers[0xF] == 1);
+  assert(chip8->pc == 0x202);
+}
+
+void test_vx_minus_vy_no_borrow(chip8_t *chip8) {
+  init(chip8);
+
+  chip8->memory[0x200] = 0x80;
+  chip8->memory[0x201] = 0x15;
+
+  chip8->registers[0] = 0xFF;
+  chip8->registers[1] = 0x00;
+
+  emulate_cycle(chip8);
+
+  assert(chip8->registers[0] == 0xFF);
+  assert(chip8->registers[0xF] == 1);
+  assert(chip8->pc == 0x202);
+}
+
+void test_vx_minus_vy_borrow(chip8_t *chip8) {
+  init(chip8);
+
+  chip8->memory[0x200] = 0x80;
+  chip8->memory[0x201] = 0x15;
+
+  chip8->registers[0] = 0x00;
+  chip8->registers[1] = 0xFF;
+
+  emulate_cycle(chip8);
+
+  assert(chip8->registers[0xF] == 0);
+  assert(chip8->pc == 0x202);
 }
 
 int main() {
@@ -233,4 +266,6 @@ int main() {
   test_vx_xor_vy(chip8);
   test_vx_plus_vy_no_carry(chip8);
   test_vx_plus_vy_carry(chip8);
+  test_vx_minus_vy_no_borrow(chip8);
+  test_vx_minus_vy_borrow(chip8);
 }
