@@ -7,5 +7,6 @@ void test_jump(chip8_t *chip8);
 void test_call(chip8_t *chip8);
 void test_skip_if_equal_byte(chip8_t *chip8);
 void test_skip_if_not_equal_byte(chip8_t *chip8);
+void test_skip_if_equal_register(chip8_t *chip8);
 
 #endif

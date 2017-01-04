@@ -63,7 +63,6 @@ void test_call(chip8_t *chip8) {
 }
 
 void test_skip_if_equal_byte(chip8_t *chip8) {
-  /* skip */
   init(chip8);
 
   chip8->memory[0x200] = 0x32;
@@ -74,21 +73,9 @@ void test_skip_if_equal_byte(chip8_t *chip8) {
   emulate_cycle(chip8);
 
   assert(chip8->pc == 0x204);
-  /* don't skip */
-  init(chip8);
-
-  chip8->memory[0x200] = 0x32;
-  chip8->memory[0x201] = 0xAA;
-
-  chip8->registers[2]  = 0xBB;
-
-  emulate_cycle(chip8);
-
-  assert(chip8->pc == 0x202);
 }
 
 void test_skip_if_not_equal_byte(chip8_t *chip8) {
-  /* skip */
   init(chip8);
 
   chip8->memory[0x200] = 0x42;
@@ -99,17 +86,20 @@ void test_skip_if_not_equal_byte(chip8_t *chip8) {
   emulate_cycle(chip8);
 
   assert(chip8->pc == 0x204);
-  /* don't skip */
+}
+
+void test_skip_if_equal_register(chip8_t *chip8) {
   init(chip8);
 
-  chip8->memory[0x200] = 0x42;
-  chip8->memory[0x201] = 0xAA;
+  chip8->memory[0x200] = 0x50;
+  chip8->memory[0x201] = 0x10;
 
-  chip8->registers[2]  = 0xAA;
+  chip8->registers[0] = 0xAA;
+  chip8->registers[1] = 0xAA;
 
   emulate_cycle(chip8);
 
-  assert(chip8->pc == 0x202);
+  assert(chip8->pc == 0x204);
 }
 
 int main() {
@@ -121,4 +111,5 @@ int main() {
   test_jump(chip8);
   test_skip_if_equal_byte(chip8);
   test_skip_if_not_equal_byte(chip8);
+  test_skip_if_equal_register(chip8);
 }
