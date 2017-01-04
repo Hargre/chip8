@@ -142,6 +142,19 @@ void emulate_cycle(chip8_t *chip8) {
           chip8->registers[(chip8->opcode & 0x0F00) >> 8] ^= chip8->registers[(chip8->opcode & 0x00F0) >> 4];
           chip8->pc += 2;
         break;
+
+        /* 0x8XY4: Adds VY to VX. Sets VF to 1 if there's carry */
+        case 0x0004:
+          if (chip8->registers[(chip8->opcode & 0x00F0) >> 4] > 
+             (0xFF) - chip8->registers[(chip8->opcode & 0x0F00) >> 8]) {
+            chip8->registers[0xF] = 1; // carry flag
+          }
+          else {
+            chip8->registers[0xF] = 0;
+          }
+          chip8->registers[(chip8->opcode & 0x0F00) >> 8] += chip8->registers[(chip8->opcode & 0x00F0) >> 4];
+          chip8->pc += 2;
+        break;
       }
     break;
   }
