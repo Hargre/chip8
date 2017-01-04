@@ -11,5 +11,6 @@ void test_skip_if_equal_register(chip8_t *chip8);
 void test_set_register_byte(chip8_t *chip8);
 void test_add_register_byte(chip8_t *chip8);
 void test_set_register_register(chip8_t *chip8);
+void test_vx_or_vy(chip8_t *chip8);
 
 #endif

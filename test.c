@@ -142,6 +142,20 @@ void test_set_register_register(chip8_t *chip8) {
   assert(chip8->pc == 0x202);
 }
 
+void test_vx_or_vy(chip8_t *chip8) {
+  init(chip8);
+
+  chip8->memory[0x200] = 0x80;
+  chip8->memory[0x201] = 0x11;
+
+  chip8->registers[1] = 0xFF;
+
+  emulate_cycle(chip8);
+
+  assert(chip8->registers[0] == 0xFF);
+  assert(chip8->pc == 0x202);
+}
+
 int main() {
   chip8_t *chip8;
   chip8 = malloc(sizeof(chip8_t));
