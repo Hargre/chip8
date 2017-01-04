@@ -66,5 +66,12 @@ void emulate_cycle(chip8_t *chip8) {
     case 0x1000:
       chip8->pc = chip8->opcode & 0x0FFF;
     break;
+
+    /* 0x2NNN: Calls subroutine at NNN */
+    case 0x2000:
+      chip8->stack[chip8->sp] = chip8->pc;
+      chip8->sp++;
+      chip8->pc = chip8->opcode & 0x0FFF;
+    break;
   }
 }
