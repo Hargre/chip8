@@ -107,7 +107,13 @@ void emulate_cycle(chip8_t *chip8) {
 
     /* 0x6XNN: Sets VX to NN */
     case 0x6000:
-      chip8->registers[(chip8->opcode & 0x0F00) >> 8] = chip8->opcode & 0x00FF;
+      chip8->registers[(chip8->opcode & 0x0F00) >> 8] = (chip8->opcode & 0x00FF);
+      chip8->pc += 2;
+    break;
+
+    /* 0x7XNN Adds NN to VX */
+    case 0x7000:
+      chip8->registers[(chip8->opcode & 0x0F00) >> 8] += (chip8->opcode & 0x00FF);
       chip8->pc += 2;
     break;
   }
