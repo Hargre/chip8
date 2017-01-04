@@ -48,6 +48,17 @@ void emulate_cycle(chip8_t *chip8) {
           memset(chip8->graphics, 0, sizeof(chip8->graphics));
           chip8->pc += 2;
         break;
+
+        /* 0x00EE: Returns from a subroutine */
+        case 0x000E:
+          chip8->sp--;
+          chip8->pc = chip8->stack[chip8->sp];
+          chip8->pc += 2;
+        break;
+
+        default:
+          printf("Unknown opcode [0x0000]: 0x%X\n", chip8->opcode);
+        break;
       }
     break;
   }
