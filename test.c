@@ -61,6 +61,31 @@ void test_call(chip8_t *chip8) {
   assert(chip8->pc == 0x545);
 }
 
+void test_skip_if_equal_byte(chip8_t *chip8) {
+  /* skip */
+  init(chip8);
+
+  chip8->memory[0x200] = 0x32;
+  chip8->memory[0x201] = 0xAA;
+
+  chip8->registers[2]  = 0xAA;
+
+  emulate_cycle(chip8);
+
+  assert(chip8->pc == 0x204);
+  /* don't skip */
+  init(chip8);
+
+  chip8->memory[0x200] = 0x32;
+  chip8->memory[0x201] = 0xAA;
+
+  chip8->registers[2]  = 0xBB;
+
+  emulate_cycle(chip8);
+
+  assert(chip8->pc == 0x202);
+}
+
 int main() {
   chip8_t *chip8;
   chip8 = malloc(sizeof(chip8_t));
@@ -68,4 +93,5 @@ int main() {
   test_clear_screen(chip8);
   test_return(chip8);
   test_jump(chip8);
+  test_skip_if_equal_byte(chip8);
 }
