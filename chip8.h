@@ -9,10 +9,10 @@ typedef struct chip8 {
   uint8_t  registers[16];
 
   uint16_t i_register;
-  uint16_t program_counter;
+  uint16_t pc; // Program counter
   
   uint16_t stack[16];
-  uint16_t stack_pointer;
+  uint16_t sp; // Stack pointer
 
   uint8_t  key[16];
   uint8_t  graphics[64 * 32];

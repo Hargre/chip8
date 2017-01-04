@@ -4,10 +4,10 @@
 #include "chip8.h"
 
 void init(chip8_t *chip8) {
-  chip8->program_counter = 0x200; // Program initial address
-  chip8->opcode          = 0;
-  chip8->i_register      = 0;
-  chip8->stack_pointer   = 0;
+  chip8->pc         = 0x200; // Program initial address
+  chip8->opcode     = 0;
+  chip8->i_register = 0;
+  chip8->sp         = 0;
 
   memset(chip8->memory,    0, sizeof(chip8->memory));
   memset(chip8->registers, 0, sizeof(chip8->registers));
@@ -29,4 +29,26 @@ void load_rom(chip8_t *chip8, const char *filename) {
 
   fread(&chip8->memory[0x200], size, 1, rom);
   fclose(rom);
+}
+
+void emulate_cycle(chip8_t *chip8) {
+  /* Fetch 
+   * Get two bytes from memory, combine them into opcode word 
+   */
+  chip8->opcode = chip8->memory[chip8->pc] << 8 | chip8->memory[chip8->pc + 1];
+
+  /* Decode 
+   * Reads first four bits from opcode, switchs to corresponding instruction
+   */
+  switch (chip8->opcode & 0xF000) {
+    case 0x0000:
+      switch (chip8->opcode & 0x000F) {
+        /* 0x00E0: Clears the screen */
+        case 0x0000: 
+          memset(chip8->graphics, 0, sizeof(chip8->graphics));
+          chip8->pc += 2;
+        break;
+      }
+    break;
+  }
 }
