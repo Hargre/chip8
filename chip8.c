@@ -61,5 +61,10 @@ void emulate_cycle(chip8_t *chip8) {
         break;
       }
     break;
+
+    /* 0x1NNN: Jumps to address NNN */
+    case 0x1000:
+      chip8->pc = chip8->opcode & 0x0FFF;
+    break;
   }
 }
