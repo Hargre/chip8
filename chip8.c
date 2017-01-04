@@ -136,6 +136,12 @@ void emulate_cycle(chip8_t *chip8) {
           chip8->registers[(chip8->opcode & 0x0F00) >> 8] &= chip8->registers[(chip8->opcode & 0x00F0) >> 4];
           chip8->pc += 2;
         break;
+
+        /* 0x8XY3: Sets VX to VX XOR VY */
+        case 0x0003:
+          chip8->registers[(chip8->opcode & 0x0F00) >> 8] ^= chip8->registers[(chip8->opcode & 0x00F0) >> 4];
+          chip8->pc += 2;
+        break;
       }
     break;
   }
