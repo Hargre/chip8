@@ -83,5 +83,15 @@ void emulate_cycle(chip8_t *chip8) {
         chip8->pc += 2;
       }
     break;
+
+    /* 0x4XNN: Skips instruction if VX doesn't equal NN */
+    case 0x4000:
+      if (chip8->registers[(chip8->opcode & 0x0F00) >> 8] != (chip8->opcode & 0x00FF)) {
+        chip8->pc += 4;
+      }
+      else {
+        chip8->pc += 2;
+      }
+    break;
   }
 }
