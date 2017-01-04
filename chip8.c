@@ -111,10 +111,20 @@ void emulate_cycle(chip8_t *chip8) {
       chip8->pc += 2;
     break;
 
-    /* 0x7XNN Adds NN to VX */
+    /* 0x7XNN: Adds NN to VX */
     case 0x7000:
       chip8->registers[(chip8->opcode & 0x0F00) >> 8] += (chip8->opcode & 0x00FF);
       chip8->pc += 2;
+    break;
+
+    case 0x8000:
+      switch(chip8->opcode & 0x000F) {
+        /* 0x8XY0: Sets VX to VY */
+        case 0x0000:
+          chip8->registers[(chip8->opcode & 0x0F00 >> 8)] = chip8->registers[(chip8->opcode & 0x00F0) >> 4];
+          chip8->pc += 2;
+        break;
+      }
     break;
   }
 }

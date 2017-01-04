@@ -128,6 +128,20 @@ void test_add_register_byte(chip8_t *chip8) {
   assert(chip8->pc == 0x202);
 }
 
+void test_set_register_register(chip8_t *chip8) {
+  init(chip8);
+
+  chip8->memory[0x200] = 0x80;
+  chip8->memory[0x201] = 0x10;
+
+  chip8->registers[1] = 0x10;
+
+  emulate_cycle(chip8);
+
+  assert(chip8->registers[0] == 0x10);
+  assert(chip8->pc == 0x202);
+}
+
 int main() {
   chip8_t *chip8;
   chip8 = malloc(sizeof(chip8_t));
@@ -140,4 +154,5 @@ int main() {
   test_skip_if_equal_register(chip8);
   test_set_register_byte(chip8);
   test_add_register_byte(chip8);
+  test_set_register_register(chip8);
 }
