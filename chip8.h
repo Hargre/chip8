@@ -3,22 +3,26 @@
 
 #include <stdint.h>
 
-struct chip8_cpu {
-  int16_t opcode;
-  int8_t  memory[0xFFF];
-  int8_t  registers[16];
+typedef struct chip8 {
+  uint16_t opcode;
+  uint8_t  memory[0xFFF];
+  uint8_t  registers[16];
 
-  int16_t i_register;
-  int16_t program_counter;
+  uint16_t i_register;
+  uint16_t program_counter;
   
-  int16_t stack[16];
-  int16_t stack_pointer;
+  uint16_t stack[16];
+  uint16_t stack_pointer;
 
-  int8_t  key[16];
-  int8_t  graphics[32 * 64];
-  
-  int8_t  delay_timer;
-  int8_t  sound_timer;
-}
+  uint8_t  key[16];
+  uint8_t  graphics[64 * 32];
+
+  uint8_t  delay_timer;
+  uint8_t  sound_timer;
+} chip8_t;
+
+void init(chip8_t *chip8);
+void load_rom(chip8_t *chip8, const char *filename);
+void emulate_cycle(chip8_t *chip8);
 
 #endif
