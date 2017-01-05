@@ -355,6 +355,14 @@ void emulate_cycle(chip8_t *chip8) {
 
           chip8->pc += 2;
         break;
+
+        /* 0xFX55 Stores V0 to VX (including VX) in memory starting at address I */
+        case 0x0055:
+          for (int i = 0; i <= ((chip8->opcode & 0x0F00) >> 8); i++) {
+            chip8->memory[chip8->i_register + i] = chip8->registers[i];
+          }
+          chip8->pc += 2;
+        break;
       }
     break;
   }

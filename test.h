@@ -34,5 +34,6 @@ void test_set_delay_timer_to_vx(chip8_t *chip8);
 void test_set_sound_timer_to_vx(chip8_t *chip8);
 void test_add_vx_to_i(chip8_t *chip8);
 void test_vx_to_bcd(chip8_t *chip8);
+void test_write_registers(chip8_t *chip8);
 
 #endif
