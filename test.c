@@ -362,6 +362,27 @@ void test_draw(chip8_t *chip8) {
   for (int i = 0; i < 8; i++) {
     assert(chip8->graphics[i] == 1);
   }
+
+  chip8->memory[chip8->i_register] = 0x00;
+
+  emulate_cycle(chip8);
+
+  for (int i = 0; i < 8; i++) {
+    assert(chip8->graphics[i] == 0);
+  }
+}
+
+void test_skip_if_key_pressed(chip8_t *chip8) {
+  init(chip8);
+
+  chip8->memory[0x200] = 0xE0;
+  chip8->memory[0x201] = 0x9E;
+
+  chip8->key[0] = 1;
+
+  emulate_cycle(chip8);
+
+  assert(chip8->pc == 0x204);
 }
 
 int main() {
@@ -392,4 +413,5 @@ int main() {
   test_set_i(chip8);
   test_jump_plus_v0(chip8);
   test_draw(chip8);
+  test_skip_if_key_pressed(chip8);
 }

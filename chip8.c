@@ -119,7 +119,7 @@ void emulate_cycle(chip8_t *chip8) {
     break;
 
     case 0x8000:
-      switch(chip8->opcode & 0x000F) {
+      switch (chip8->opcode & 0x000F) {
         /* 0x8XY0: Sets VX to VY */
         case 0x0000:
           chip8->registers[(chip8->opcode & 0x0F00) >> 8] = chip8->registers[(chip8->opcode & 0x00F0) >> 4];
@@ -257,7 +257,19 @@ void emulate_cycle(chip8_t *chip8) {
       }
       chip8->pc += 2;
     }
-      
+
+    case 0xE000: 
+      switch (chip8->opcode & 0x000F) {
+        /* 0xEX9E: Skips instruction if key stored in VX is pressed */
+        case 0x000E:
+          if (chip8->key[chip8->registers[(chip8->opcode & 0x0F00) >> 8]] != 0) {
+            chip8->pc += 4;
+          }
+          else {
+            chip8->pc += 2;
+          }
+        break;
+      }  
     break;
   }
 }
