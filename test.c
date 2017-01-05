@@ -349,6 +349,21 @@ void test_jump_plus_v0(chip8_t *chip8) {
   assert(chip8->pc == 0x0001);
 }
 
+void test_draw(chip8_t *chip8) {
+  init(chip8);
+
+  chip8->memory[0x200] = 0xD0;
+  chip8->memory[0x201] = 0x01;
+
+  chip8->memory[chip8->i_register] = 0xFF; 
+
+  emulate_cycle(chip8);
+
+  for (int i = 0; i < 8; i++) {
+    assert(chip8->graphics[i] == 1);
+  }
+}
+
 int main() {
   chip8_t *chip8;
   chip8 = malloc(sizeof(chip8_t));
@@ -376,4 +391,5 @@ int main() {
   test_skip_vx_not_equal_vy(chip8);
   test_set_i(chip8);
   test_jump_plus_v0(chip8);
+  test_draw(chip8);
 }

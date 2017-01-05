@@ -231,5 +231,33 @@ void emulate_cycle(chip8_t *chip8) {
       chip8->registers[(chip8->opcode & 0x0F00) >> 8] = (rand() % 0xFF) & (chip8->opcode & 0x00FF);
       chip8->pc += 2;
     break;
+
+    /* 0xDXYN: Draws a 8xN sprite at coordinate (VX, VY). Sets VF to 1 if any screen pixels are flipped.
+     * Each row of 8 pixels is read starting at memory location I.
+     */
+    case 0xD000: {
+      uint8_t x = chip8->registers[(chip8->opcode & 0x0F00) >> 8];
+      uint8_t y = chip8->registers[(chip8->opcode & 0x00F0) >> 4];
+
+      uint8_t height = chip8->opcode & 0x000F;
+      uint8_t pixel;
+
+      chip8->registers[0xF] = 0;
+
+      for (int y_line = 0; y_line < height; y_line++) {
+        pixel = chip8->memory[chip8->i_register + y_line];
+        for (int x_line = 0; x_line < 8; x_line++) {
+          if ((pixel) & (0x80 >> x_line) != 0) {
+            if (chip8->graphics[(x + x_line + ((y + y_line) * 64))] == 1) {
+              chip8->registers[0xF] = 1;
+            }
+            chip8->graphics[(x + x_line + ((y + y_line) * 64))] ^= 1;
+          }
+        }
+      }
+      chip8->pc += 2;
+    }
+      
+    break;
   }
 }
