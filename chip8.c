@@ -196,6 +196,21 @@ void emulate_cycle(chip8_t *chip8) {
           chip8->registers[(chip8->opcode & 0x0F00) >> 8] <<= 1;
           chip8->pc += 2;
         break;
+
+        default:
+          printf("Unknown opcode [0x8000]: 0x%X\n", chip8->opcode);
+        break;
+      }
+    break;
+
+    /* 0x9XY0: Skips instruction if VX != VY */
+    case 0x9000:
+      if (chip8->registers[(chip8->opcode & 0x0F00) >> 8] != 
+          chip8->registers[(chip8->opcode & 0x00F0) >> 4]) {
+        chip8->pc += 4;
+      }
+      else {
+        chip8->pc += 2;
       }
     break;
   }
