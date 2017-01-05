@@ -31,5 +31,6 @@ void test_skip_if_key_not_pressed(chip8_t *chip8);
 void test_set_vx_to_delay_timer(chip8_t *chip8);
 void test_wait_for_key(chip8_t *chip8);
 void test_set_delay_timer_to_vx(chip8_t *chip8);
+void test_set_sound_timer_to_vx(chip8_t *chip8);
 
 #endif

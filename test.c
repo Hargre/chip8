@@ -442,6 +442,21 @@ void test_set_delay_timer_to_vx(chip8_t *chip8) {
   assert(chip8->pc == 0x202);
 }
 
+void test_set_sound_timer_to_vx(chip8_t *chip8) {
+  init(chip8);
+
+  chip8->memory[0x200] = 0xF0;
+  chip8->memory[0x201] = 0x18;
+
+  chip8->registers[0] = 0xA;
+
+  emulate_cycle(chip8);
+
+  /* value minus one, since one cycle passed */
+  assert(chip8->sound_timer == (0xA - 1));
+  assert(chip8->pc == 0x202);
+}
+
 int main() {
   chip8_t *chip8;
   chip8 = malloc(sizeof(chip8_t));
@@ -475,4 +490,5 @@ int main() {
   test_set_vx_to_delay_timer(chip8);
   test_wait_for_key(chip8);
   test_set_delay_timer_to_vx(chip8);
+  test_set_sound_timer_to_vx(chip8);
 }

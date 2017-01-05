@@ -315,6 +315,12 @@ void emulate_cycle(chip8_t *chip8) {
           chip8->delay_timer = chip8->registers[(chip8->opcode & 0x0F00) >> 8];
           chip8->pc += 2;
         break;
+
+        /* 0xFX18: Sets sound timer to VX */
+        case 0x0018:
+          chip8->sound_timer = chip8->registers[(chip8->opcode & 0x0F00) >> 8];
+          chip8->pc += 2;
+        break;
       }
     break;
   }
