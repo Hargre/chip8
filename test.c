@@ -362,14 +362,7 @@ void test_draw(chip8_t *chip8) {
   for (int i = 0; i < 8; i++) {
     assert(chip8->graphics[i] == 1);
   }
-
-  chip8->memory[chip8->i_register] = 0x00;
-
-  emulate_cycle(chip8);
-
-  for (int i = 0; i < 8; i++) {
-    assert(chip8->graphics[i] == 0);
-  }
+  assert(chip8->pc == 0x202);
 }
 
 void test_skip_if_key_pressed(chip8_t *chip8) {
@@ -412,6 +405,28 @@ void test_set_vx_to_delay_timer(chip8_t *chip8) {
   assert(chip8->pc == 0x202);
 }
 
+void test_wait_for_key(chip8_t *chip8) {
+  init(chip8);
+
+  chip8->memory[0x200] = 0xF0;
+  chip8->memory[0x201] = 0x0A;
+
+  chip8->key[1] = 1;
+
+  emulate_cycle(chip8);
+
+  assert(chip8->registers[0] == 1);
+  assert(chip8->pc == 0x202);
+
+  chip8->key[1] = 0;
+  chip8->pc = 0x200;
+
+  emulate_cycle(chip8);
+
+  /* no key pressed; should maintain state */
+  assert(chip8->pc == 0x200);
+}
+
 int main() {
   chip8_t *chip8;
   chip8 = malloc(sizeof(chip8_t));
@@ -443,4 +458,5 @@ int main() {
   test_skip_if_key_pressed(chip8);
   test_skip_if_key_not_pressed(chip8);
   test_set_vx_to_delay_timer(chip8);
+  test_wait_for_key(chip8);
 }

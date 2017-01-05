@@ -257,6 +257,7 @@ void emulate_cycle(chip8_t *chip8) {
       }
       chip8->pc += 2;
     }
+    break;
 
     case 0xE000: 
       switch (chip8->opcode & 0x000F) {
@@ -288,6 +289,25 @@ void emulate_cycle(chip8_t *chip8) {
         case 0x0007:
           chip8->registers[(chip8->opcode & 0x0F00) >> 8] = chip8->delay_timer;
           chip8->pc += 2;
+        break;
+
+        /* 0xFX0A: Waits for a key press, and stores its value in VX */
+        case 0x000A: {
+          int key_press = 0;
+
+          for (int i = 0; i < 16; i++) {
+            if (chip8->key[i] != 0) {
+              chip8->registers[(chip8->opcode & 0x0F00) >> 8] = i;
+              key_press = 1;
+            }
+          }
+
+          if (!key_press) {
+            return;
+          }
+
+          chip8->pc += 2;
+        }
         break;
       }
     break;
