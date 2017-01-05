@@ -344,6 +344,17 @@ void emulate_cycle(chip8_t *chip8) {
           chip8->i_register = chip8->registers[(chip8->opcode & 0x0F00) >> 8] * 0x5;
           chip8->pc += 2;
         break;
+
+        /* 0xFX33: Stores the BCD representation of VX. 
+         * Stored at address I (MSD), I + 1 and I + 2 (LSD) 
+         */
+        case 0x0033:
+          chip8->memory[chip8->i_register]     = (chip8->registers[(chip8->opcode & 0x0F00) >> 8] / 100);
+          chip8->memory[chip8->i_register + 1] = (chip8->registers[(chip8->opcode & 0x0F00) >> 8] / 10)  % 10;
+          chip8->memory[chip8->i_register + 2] = (chip8->registers[(chip8->opcode & 0x0F00) >> 8] % 100) % 10;
+
+          chip8->pc += 2;
+        break;
       }
     break;
   }

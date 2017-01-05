@@ -484,6 +484,22 @@ void test_add_vx_to_i(chip8_t *chip8) {
   assert(chip8->pc == 0x202);
 }
 
+void test_vx_to_bcd(chip8_t *chip8) {
+  init(chip8);
+
+  chip8->memory[0x200] = 0xF0;
+  chip8->memory[0x201] = 0x33;
+
+  chip8->registers[0] = 0xFF;
+
+  emulate_cycle(chip8);
+
+  assert(chip8->memory[chip8->i_register] == 2);
+  assert(chip8->memory[chip8->i_register + 1] == 5);
+  assert(chip8->memory[chip8->i_register + 2] == 5);
+  assert(chip8->pc == 0x202);
+}
+
 int main() {
   chip8_t *chip8;
   chip8 = malloc(sizeof(chip8_t));
@@ -519,4 +535,5 @@ int main() {
   test_set_delay_timer_to_vx(chip8);
   test_set_sound_timer_to_vx(chip8);
   test_add_vx_to_i(chip8);
+  test_vx_to_bcd(chip8);
 }
