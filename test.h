@@ -19,5 +19,7 @@ void test_vx_plus_vy_carry(chip8_t *chip8);
 void test_vx_minus_vy_no_borrow(chip8_t *chip8);
 void test_vx_minus_vy_borrow(chip8_t *chip8);
 void test_vx_right_shift(chip8_t *chip8);
+void test_vy_minus_vx_no_borrow(chip8_t *chip8);
+void test_vy_minus_vx_borrow(chip8_t *chip8);
 
 #endif
