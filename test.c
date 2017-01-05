@@ -385,6 +385,19 @@ void test_skip_if_key_pressed(chip8_t *chip8) {
   assert(chip8->pc == 0x204);
 }
 
+void test_skip_if_key_not_pressed(chip8_t *chip8) {
+  init(chip8);
+
+  chip8->memory[0x200] = 0xE0;
+  chip8->memory[0x201] = 0xA1;
+
+  chip8->key[0] = 0;
+
+  emulate_cycle(chip8);
+
+  assert(chip8->pc == 0x204);
+}
+
 int main() {
   chip8_t *chip8;
   chip8 = malloc(sizeof(chip8_t));
@@ -414,4 +427,5 @@ int main() {
   test_jump_plus_v0(chip8);
   test_draw(chip8);
   test_skip_if_key_pressed(chip8);
+  test_skip_if_key_not_pressed(chip8);
 }

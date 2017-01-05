@@ -269,6 +269,16 @@ void emulate_cycle(chip8_t *chip8) {
             chip8->pc += 2;
           }
         break;
+
+        /* 0xEXA1: Skips instruction if key stored in VX is not pressed */
+        case 0x0001:
+          if (chip8->key[chip8->registers[(chip8->opcode & 0x0F00) >> 8]] == 0) {
+            chip8->pc += 4;
+          }
+          else {
+            chip8->pc += 2;
+          }
+        break;
       }  
     break;
   }
