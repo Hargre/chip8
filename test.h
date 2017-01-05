@@ -24,5 +24,6 @@ void test_vy_minus_vx_borrow(chip8_t *chip8);
 void test_vx_left_shift(chip8_t *chip8);
 void test_skip_vx_not_equal_vy(chip8_t *chip8);
 void test_set_i(chip8_t *chip8);
+void test_jump_plus_v0(chip8_t *chip8);
 
 #endif

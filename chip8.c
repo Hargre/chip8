@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "chip8.h"
@@ -217,6 +218,17 @@ void emulate_cycle(chip8_t *chip8) {
     /* 0xANNN: Sets I to the address NNN */
     case 0xA000:
       chip8->i_register = chip8->opcode & 0x0FFF;
+      chip8->pc += 2;
+    break;
+
+    /* 0xBNNN: Jumps to the address NNN plus V0 */
+    case 0xB000:
+      chip8->pc = (chip8->opcode & 0x0FFF) + chip8->registers[0];
+    break;
+
+    /* 0xCXNN: Sets VX to NN && a random number */
+    case 0xC000:
+      chip8->registers[(chip8->opcode & 0x0F00) >> 8] = (rand() % 0xFF) & (chip8->opcode & 0x00FF);
       chip8->pc += 2;
     break;
   }
