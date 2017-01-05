@@ -323,6 +323,19 @@ void test_skip_vx_not_equal_vy(chip8_t *chip8) {
   assert(chip8->pc == 0x204);
 }
 
+void test_set_i(chip8_t *chip8) {
+  init(chip8);
+
+  chip8->memory[0x200] = 0xAA;
+  chip8->memory[0x201] = 0xAA;
+
+  emulate_cycle(chip8);
+  /* I register should have address 0xAAA */
+
+  assert(chip8->i_register == 0xAAA);
+  assert(chip8->pc == 0x202);
+}
+
 int main() {
   chip8_t *chip8;
   chip8 = malloc(sizeof(chip8_t));
@@ -348,4 +361,5 @@ int main() {
   test_vy_minus_vx_borrow(chip8);
   test_vx_left_shift(chip8);
   test_skip_vx_not_equal_vy(chip8);
+  test_set_i(chip8);
 }

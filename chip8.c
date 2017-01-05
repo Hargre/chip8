@@ -213,5 +213,11 @@ void emulate_cycle(chip8_t *chip8) {
         chip8->pc += 2;
       }
     break;
+
+    /* 0xANNN: Sets I to the address NNN */
+    case 0xA000:
+      chip8->i_register = chip8->opcode & 0x0FFF;
+      chip8->pc += 2;
+    break;
   }
 }
