@@ -281,5 +281,26 @@ void emulate_cycle(chip8_t *chip8) {
         break;
       }  
     break;
+
+    case 0xF000:
+      switch (chip8->opcode & 0x00FF) {
+        /* 0xFX07: Sets VX to the value of delay timer */
+        case 0x0007:
+          chip8->registers[(chip8->opcode & 0x0F00) >> 8] = chip8->delay_timer;
+          chip8->pc += 2;
+        break;
+      }
+    break;
+  }
+
+  /* Timers
+   * Update delay and sound timers 
+   */
+  if (chip8->delay_timer > 0) {
+    chip8->delay_timer--;
+  }
+
+  if (chip8->sound_timer > 0) {
+    chip8->sound_timer--;
   }
 }
