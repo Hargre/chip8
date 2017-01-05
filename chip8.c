@@ -15,6 +15,9 @@ void init(chip8_t *chip8) {
   memset(chip8->stack,     0, sizeof(chip8->stack));
   memset(chip8->key,       0, sizeof(chip8->key));
   memset(chip8->graphics,  0, sizeof(chip8->graphics));
+
+  chip8->delay_timer = 0;
+  chip8->sound_timer = 0;
 }
 
 void load_rom(chip8_t *chip8, const char *filename) {
@@ -331,6 +334,14 @@ void emulate_cycle(chip8_t *chip8) {
             chip8->registers[0xF] = 0;
           }
           chip8->i_register += chip8->registers[(chip8->opcode & 0x0F00) >> 8];
+          chip8->pc += 2;
+        break;
+
+        /* 0xFX29: Sets I to the location of the sprite for the character in VX.
+         * Characters are represented by a 4x5 font.
+         */
+        case 0x0029:
+          chip8->i_register = chip8->registers[(chip8->opcode & 0x0F00) >> 8] * 0x5;
           chip8->pc += 2;
         break;
       }
