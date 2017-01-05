@@ -189,6 +189,13 @@ void emulate_cycle(chip8_t *chip8) {
                                                             chip8->registers[(chip8->opcode & 0x0F00) >> 8];
           chip8->pc += 2;
         break;
+
+        /* 0x8XYE: Shifts VX left by one. Sets VF to the MSB of VX before-shift */
+        case 0x000E:
+          chip8->registers[0xF] = chip8->registers[(chip8->opcode & 0x0F00) >> 8] >> 7;
+          chip8->registers[(chip8->opcode & 0x0F00) >> 8] <<= 1;
+          chip8->pc += 2;
+        break;
       }
     break;
   }
