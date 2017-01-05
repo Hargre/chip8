@@ -457,6 +457,33 @@ void test_set_sound_timer_to_vx(chip8_t *chip8) {
   assert(chip8->pc == 0x202);
 }
 
+void test_add_vx_to_i(chip8_t *chip8) {
+  init(chip8);
+
+  chip8->memory[0x200] = 0xF0;
+  chip8->memory[0x201] = 0x1E;
+
+  chip8->registers[0] = 0xA0;
+  chip8->i_register   = 0x0A;
+
+  emulate_cycle(chip8);
+
+  assert(chip8->i_register == 0xAA);
+  assert(chip8->registers[0xF] == 0);
+  assert(chip8->pc == 0x202);
+
+  /* now with overflow */
+  chip8->pc = 0x200;
+
+  chip8->registers[0] = 0xEE;
+  chip8->i_register   = 0xFF;
+
+  emulate_cycle(chip8);
+
+  assert(chip8->registers[0xF] == 1);
+  assert(chip8->pc == 0x202);
+}
+
 int main() {
   chip8_t *chip8;
   chip8 = malloc(sizeof(chip8_t));
@@ -491,4 +518,5 @@ int main() {
   test_wait_for_key(chip8);
   test_set_delay_timer_to_vx(chip8);
   test_set_sound_timer_to_vx(chip8);
+  test_add_vx_to_i(chip8);
 }

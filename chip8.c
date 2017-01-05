@@ -321,6 +321,18 @@ void emulate_cycle(chip8_t *chip8) {
           chip8->sound_timer = chip8->registers[(chip8->opcode & 0x0F00) >> 8];
           chip8->pc += 2;
         break;
+
+        /* 0xFX1E: Adds VX to I. Sets VF if in overflow range (undocumented) */
+        case 0x001E:
+          if (chip8->registers[(chip8->opcode & 0x0F00) >> 8] > (0xFF - chip8->i_register)) {
+            chip8->registers[0xF] = 1;
+          }
+          else {
+            chip8->registers[0xF] = 0;
+          }
+          chip8->i_register += chip8->registers[(chip8->opcode & 0x0F00) >> 8];
+          chip8->pc += 2;
+        break;
       }
     break;
   }
