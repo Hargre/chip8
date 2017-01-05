@@ -518,6 +518,24 @@ void test_write_registers(chip8_t *chip8) {
   assert(chip8->pc == 0x202);
 }
 
+void test_read_registers(chip8_t *chip8) {
+  init(chip8);
+
+  chip8->memory[0x200] = 0xFF; 
+  chip8->memory[0x201] = 0x65;
+
+  for (int i = 0; i < 0xF; i++) {
+    chip8->memory[chip8->i_register + i] = 0x1;
+  }
+
+  emulate_cycle(chip8);
+
+  for (int i = 0; i < 0xF; i++) {
+    assert(chip8->registers[i] == 0x1);
+  }
+  assert(chip8->pc == 0x202);
+}
+
 int main() {
   chip8_t *chip8;
   chip8 = malloc(sizeof(chip8_t));
@@ -555,4 +573,5 @@ int main() {
   test_add_vx_to_i(chip8);
   test_vx_to_bcd(chip8);
   test_write_registers(chip8);
+  test_read_registers(chip8);
 }
