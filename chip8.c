@@ -10,6 +10,8 @@ void init(chip8_t *chip8) {
   chip8->i_register = 0;
   chip8->sp         = 0;
 
+  memcpy(chip8->memory, fontset, sizeof(fontset));
+
   memset(chip8->memory,    0, sizeof(chip8->memory));
   memset(chip8->registers, 0, sizeof(chip8->registers));
   memset(chip8->stack,     0, sizeof(chip8->stack));
